@@ -81,23 +81,3 @@ println("This is a string")
 println("The current value of friendlyWelcome is \(friendlyWelcome)")
 // prints "The current value of friendlyWelcome is Bonjour!"
 {% endhighlight %}
-
-
-## コメント
-
-#### 行コメント (//)
-// this is a comment
-
-#### 複数行コメント
-You can also write multiline comments, which start with a forward-slash followed by an asterisk (/*) and end with an asterisk followed by a forward-slash (*/):
-
-/* this is also a comment,
-but written over multiple lines */
-Unlike multiline comments in C, multiline comments in Swift can be nested inside other multiline comments. You write nested comments by starting a multiline comment block and then starting a second multiline comment within the first block. The second block is then closed, followed by the first block:
-
-/* this is the start of the first multiline comment
-/* this is the second, nested multiline comment */
-this is the end of the first multiline comment */
-Nested multiline comments enable you to comment out large blocks of code quickly and easily, even if the code already contains multiline comments.
-
-Semicolons
