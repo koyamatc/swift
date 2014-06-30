@@ -18,10 +18,9 @@ UInt8 は、 0 から 255 の範囲です。
 
 {% highlight c linenos %}
 let cannotBeNegative: UInt8 = -1
-// UInt8 cannot store negative numbers, and so this will report an error
+// UInt8 は、負の数を持つことができないのでエラーとなります
 let tooBig: Int8 = Int8.max + 1
-// Int8 cannot store a number larger than its maximum value,
-// and so this will also report an error
+// Int8 は、最大値より大きな値を持てないのでエラーとなります
 {% endhighlight %}
 
 したがって、適宜、型変換をすることで、エラーを回避できます。
@@ -34,24 +33,27 @@ let one: UInt8 = 1
 let twoThousandAndOne = twoThousand + UInt16(one)
 {% endhighlight %}
 
-SomeType(ofInitialValue) is the default way to call the initializer of a Swift type and pass in an initial value. Behind the scenes, UInt16 has an initializer that accepts a UInt8 value, and so this initializer is used to make a new UInt16 from an existing UInt8. You can’t pass in any type here, however—it has to be a type for which UInt16 provides an initializer. Extending existing types to provide initializers that accept new types (including your own type definitions) is covered in Extensions.
+SomeType(ofInitialValue) が、初期値を渡し、　Swiftの型イニシャライザーを呼び出す方法です
 
 ###Integer and Floating-Point Conversion
 
-Conversions between integer and floating-point numeric types must be made explicit:
+整数と浮動小数点数間の型変換は、はっきりとさせなくてはいけません。
+
 {% highlight c linenos %}
 let three = 3
 let pointOneFourOneFiveNine = 0.14159
 let pi = Double(three) + pointOneFourOneFiveNine
-// pi equals 3.14159, and is inferred to be of type Double
+// pi は 3.14159　です、 型 Double が推測されます。
 {% endhighlight %}
-Here, the value of the constant three is used to create a new value of type Double, so that both sides of the addition are of the same type. Without this conversion in place, the addition would not be allowed.
 
-The reverse is also true for floating-point to integer conversion, in that an integer type can be initialized with a Double or Float value:
+ここでは、定数 three の値は型 Double　として新しく作られ使われています、その結果、足し算の2つの値はどちらも同じ型になっています。
+この変換がなければ、この足し算は許されません。
+
+浮動小数点数を整数に変換するのも可能です。
 
 {% highlight c linenos %}
 let integerPi = Int(pi)
-// integerPi equals 3, and is inferred to be of type Int
+// integerPi は 3で、 型 Int が推測されます。
 {% endhighlight %}
 
 浮動小数点数を新しく整数で初期化すると、小数点以下が切り捨てられます。
