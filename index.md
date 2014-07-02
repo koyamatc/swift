@@ -19,18 +19,18 @@ layout: default
 
 	<div class="col-sm-3">
 		<h4><span class="label label-info">Basics Operators</span></h4>
-		<ul class="post-list">
+		<ol class="post-list">
  			{% for post in site.categories.basicoperators %}
    				<li><a href="{{ post.url }}">{{ post.postTitle }}</a></li>
  			{% endfor %}
-		</ul>			
+		</ol>			
 
-		<h4></h4>
-		<ul class="post-list">
- 			{% for post in site.categories.scale %}
+		<h4><span class="label label-info">Strings and Chractors</span></h4>
+		<ol class="post-list">
+ 			{% for post in site.categories.strings_characters %}
    				<li><a href="{{ post.url }}">{{ post.postTitle }}</a></li>
  			{% endfor %}
-		</ul>			
+		</ol>			
 
 		<h4></h4>
 		<ul class="post-list">
