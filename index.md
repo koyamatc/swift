@@ -24,44 +24,65 @@ layout: default
    				<li><a href="{{ post.url }}">{{ post.postTitle }}</a></li>
  			{% endfor %}
 		</ol>			
+	</div>
 
+	<div class="col-sm-3">
 		<h4><span class="label label-info">Strings and Chractors</span></h4>
 		<ol class="post-list">
  			{% for post in site.categories.strings_characters %}
    				<li><a href="{{ post.url }}">{{ post.postTitle }}</a></li>
  			{% endfor %}
 		</ol>			
-
-		<h4></h4>
-		<ul class="post-list">
- 			{% for post in site.categories.layout %}
-   				<li><a href="{{ post.url }}">{{ post.postTitle }}</a></li>
- 			{% endfor %}
-		</ul>			
 	</div>
 
 	<div class="col-sm-3">
-		<h4></h4>
-		<ul class="post-list">
- 			{% for post in site.categories.shapes %}
+		<h4><span class="label label-info">Collection Types</span></h4>
+		<ol class="post-list">
+ 			{% for post in site.categories.collection_types %}
    				<li><a href="{{ post.url }}">{{ post.postTitle }}</a></li>
  			{% endfor %}
-		</ul>			
-		<h4></h4>
-		<ul class="post-list">
- 			{% for post in site.categories.geo %}
+		</ol>			
+	</div>
+
+</div>
+
+---------------------------------
+
+<div class="row">
+	<div class="col-sm-3">
+		<h4><span class="label label-info">Control Flow</span></h4>
+		<ol class="post-list">
+ 			{% for post in site.categories.control_flow %}
    				<li><a href="{{ post.url }}">{{ post.postTitle }}</a></li>
  			{% endfor %}
-		</ul>			
+		</ol>			
 	</div>
 
 	<div class="col-sm-3">
-		<h4></h4>
-		<ul class="post-list">
- 			{% for post in site.categories.transition %}
+		<h4><span class="label label-info">Functions</span></h4>
+		<ol class="post-list">
+ 			{% for post in site.categories.functions %}
    				<li><a href="{{ post.url }}">{{ post.postTitle }}</a></li>
  			{% endfor %}
-		</ul>			
+		</ol>			
+	</div>
+
+	<div class="col-sm-3">
+		<h4><span class="label label-info">Closures</span></h4>
+		<ol class="post-list">
+ 			{% for post in site.categories.closures %}
+   				<li><a href="{{ post.url }}">{{ post.postTitle }}</a></li>
+ 			{% endfor %}
+		</ol>			
+	</div>
+
+	<div class="col-sm-3">
+		<h4><span class="label label-info">Enumerations</span></h4>
+		<ol class="post-list">
+ 			{% for post in site.categories.enumerations %}
+   				<li><a href="{{ post.url }}">{{ post.postTitle }}</a></li>
+ 			{% endfor %}
+		</ol>			
 	</div>
 
 </div>
