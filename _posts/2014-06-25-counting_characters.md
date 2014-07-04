@@ -16,10 +16,8 @@ println("unusualMenagerie has \(countElements(unusualMenagerie)) characters")
 {% endhighlight %}
 
 <div class="panel">
-	<div class="panel-header">NOTE</div>
-	<div class="panel-body">
+	<div class="panel-heading">NOTE</div>
 Different Unicode characters and different representations of the same Unicode character can require different amounts of memory to store. Because of this, characters in Swift do not each take up the same amount of memory within a string’s representation. As a result, the length of a string cannot be calculated without iterating through the string to consider each of its characters in turn. If you are working with particularly long string values, be aware that the countElements function must iterate over the characters within a string in order to calculate an accurate character count for that string.
-	</div>
 </div>
 
 

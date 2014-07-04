@@ -17,13 +17,9 @@ categories: basicoperators
 + Less than or equal to (a <= b)
 
 <div class="panel">
-	<div class="panel-head">
-		NOTE
-	</div>
-	<div class="panel-body">
-		Swift は、2つの identity operators (=== and !==)　もサポートしています、　
+	<div class="panel-heading">NOTE</div>
+	Swift は、2つの identity operators (=== and !==)　もサポートしています、　
 		これらは、比較する2つのオブジェクトが同じオブジェクトの実体を参照しているかどうかをテストするために使います。
-	</div>
 </div>
 
 どの比較演算子も論理値を返します。

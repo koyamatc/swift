@@ -36,8 +36,6 @@ welcome += character1
 
 <div class="panel">
 	<div class="panel-header">NOTE</div>
-	<div class="panel-body">
-		すでにある文字変数に、文字列や文字を付け加えることはできません。
-		文字値は１文字しか持つことができないからです。
-	</div>
+	すでにある文字変数に、文字列や文字を付け加えることはできません。
+	文字値は１文字しか持つことができないからです。
 </div>

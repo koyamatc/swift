@@ -20,10 +20,6 @@ a += 2
 a += 2 は a = a + 2　の短縮形です。加算と代入が1つの演算子で1度にまとめて行われています。
 
 <div class="panel">
-	<div class="panel-head">
-		NOTE
-	</div>
-	<div class="panel-body">
-		複合代入演算子は値を返しません。let b = a += 2　のようには書けません。
-	</div>
+	<div class="panel-heading">NOTE</div>
+	複合代入演算子は値を返しません。let b = a += 2　のようには書けません。
 </div>

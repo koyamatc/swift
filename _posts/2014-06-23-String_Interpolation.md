@@ -19,7 +19,5 @@ let message = "\(multiplier) times 2.5 is \(Double(multiplier) * 2.5)"
 
 <div class="panel">
 	<div class="panel-header">NOTE</div>
-	<div class="panel-body">
-		補完された文字列の中のカッコの中には、 ("),(\) それと　キャリッジリターン、ラインフィードは書くことができません。
-	</div>
+	補完された文字列の中のカッコの中には、 ("),(\) それと　キャリッジリターン、ラインフィードは書くことができません。
 </div>
