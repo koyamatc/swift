@@ -5,19 +5,16 @@ postTitle:  Closure Expressions
 categories: closures
 ---
 
-Closures are self-contained blocks of functionality that can be passed around and used in your code. Closures in Swift are similar to blocks in C and Objective-C and to lambdas in other programming languages.
+クロージャは、コードを書く中で、受け渡したり使ったりできる機能を含んでいるコードのブロックです。
 
 Closures can capture and store references to any constants and variables from the context in which they are defined. This is known as closing over those constants and variables, hence the name “closures”. Swift handles all of the memory management of capturing for you.
 
-NOTE
 
-Don’t worry if you are not familiar with the concept of “capturing”. It is explained in detail below in Capturing Values.
+グローバルや入れ子の関数は、クロージャの特別な場合です。クロージャは３つの形式をとります。
 
-Global and nested functions, as introduced in Functions, are actually special cases of closures. Closures take one of three forms:
-
-+ Global functions are closures that have a name and do not capture any values.
-+ Nested functions are closures that have a name and can capture values from their enclosing function.
-+ Closure expressions are unnamed closures written in a lightweight syntax that can capture values from their surrounding context.
++ グローバル関数は名前は持ているが、どの値もキャプチャしないクロージャです。
++ 入れ子の関数は、名前があり、入れ子の関数を内包する関数から値を受け取るクロージャです。
++ クロージャの表記は、周囲のコンテキストから値を受け取れる簡単な文法で書かれた名前のないクロージャです・
 
 Swift’s closure expressions have a clean, clear style, with optimizations that encourage brief, clutter-free syntax in common scenarios. These optimizations include:
 
@@ -34,11 +31,18 @@ Closure expressions are a way to write inline closures in a brief, focused synta
 
 ### The Sort Function
 
-Swift’s standard library provides a function called sort, which sorts an array of values of a known type, based on the output of a sorting closure that you provide. Once it completes the sorting process, the sort function returns a new array of the same type and size as the old one, with its elements in the correct sorted order.
+Swiftの標準ライブラリは　sortという関数を提供しています、　
+それはあなたが書いた並び換えクロージャの出力結果をもとに、
+わかっている型の配列の値を並び替えます。
+並び替えのプロセスを完了するたびに、　
+sort 関数はもとの配列と同じ型、同じサイズの新しい配列を正しく並び替えて返します。
 
-The closure expression examples below use the sort function to sort an array of String values in reverse alphabetical order. Here’s the initial array to be sorted:
+下記のクロージャの書き方の例では、　sort関数を使い、文字列の配列値を逆順に並べ替えをしています。
 
+{% highlight c %}
 let names = ["Chris", "Alex", "Ewa", "Barry", "Daniella"]
+{% endhighlight %}
+
 The sort function takes two arguments:
 
 An array of values of a known type.
@@ -101,12 +105,20 @@ Swift automatically provides shorthand argument names to inline closures, which 
 
 If you use these shorthand argument names within your closure expression, you can omit the closure’s argument list from its definition, and the number and type of the shorthand argument names will be inferred from the expected function type. The in keyword can also be omitted, because the closure expression is made up entirely of its body:
 
+{% highlight c %}
 reversed = sort(names, { $0 > $1 } )
-Here, $0 and $1 refer to the closure’s first and second String arguments.
+{% endhighlight %}
+
+$0 と $1 は　クロージャの　１番目と２番目の文字列引数を参照しています。
 
 ### Operator Functions
 
-There’s actually an even shorter way to write the closure expression above. Swift’s String type defines its string-specific implementation of the greater-than operator (>) as a function that has two parameters of type String, and returns a value of type Bool. This exactly matches the function type needed for the sort function’s second parameter. Therefore, you can simply pass in the greater-than operator, and Swift will infer that you want to use its string-specific implementation:
+上記のクロージャの書き方を短くする方法があります。
+Swift の文字列型は、２つの文字列型のパラメータをとり、真偽値を返す関数として　（>） を
+文字列型特有に実装しています。
+これは sort 関数の２番目のパラメータとして必要な関数型にぴったりです。
+それゆえ、　> 演算子を受け渡すと、　Swiftは、文字列特有の実装された機能を使いたいのだと推測します。
 
+{% highlight c %}
 reversed = sort(names, >)
-For more about operator functions, see Operator Functions.
+{% endhighlight %}
