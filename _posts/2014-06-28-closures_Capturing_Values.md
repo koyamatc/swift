@@ -5,12 +5,14 @@ postTitle:  Capturing Values
 categories: closures
 ---
 
-A closure can capture constants and variables from the surrounding context in which it is defined. The closure can then refer to and modify the values of those constants and variables from within its body, even if the original scope that defined the constants and variables no longer exists.
+クロージャは、それが定義されている周囲から定数や変数を受け取れます。
+クロージャは、そのクロージャ内で定数や変数の値を参照したり変更したりできます。
+それはたとえ定数や変数を定義した元のスコープがすでに存在していないとしても。
 
-The simplest form of a closure in Swift is a nested function, written within the body of another function. A nested function can capture any of its outer function’s arguments and can also capture any constants and variables defined within the outer function.
+Swiftで最もシンプルなクロージャの形は、入れ子の関数です。
+入れ子の関数は、外側の関数の引数や、外側の関数で定義された定数、変数を受け取れます。
 
-Here’s an example of a function called makeIncrementor, which contains a nested function called incrementor. The nested incrementor function captures two values, runningTotal and amount, from its surrounding context. After capturing these values, incrementor is returned by makeIncrementor as a closure that increments runningTotal by amount each time it is called.
-
+{% highlight c %}
 func makeIncrementor(forIncrement amount: Int) -> () -> Int {
     var runningTotal = 0
     func incrementor() -> Int {
@@ -19,48 +21,67 @@ func makeIncrementor(forIncrement amount: Int) -> () -> Int {
     }
     return incrementor
 }
-The return type of makeIncrementor is () -> Int. This means that it returns a function, rather than a simple value. The function it returns has no parameters, and returns an Int value each time it is called. To learn how functions can return other functions, see Function Types as Return Types.
+{% endhighlight %}
 
-The makeIncrementor function defines an integer variable called runningTotal, to store the current running total of the incrementor that will be returned. This variable is initialized with a value of 0.
+makeIncrementor の戻り値の型は　() -> Int　ですから、　関数を戻すという意味です。
+makeIncrementor　が戻す関数にはパラメータは無く、呼ばれるたびに整数値を返します。
 
-The makeIncrementor function has a single Int parameter with an external name of forIncrement, and a local name of amount. The argument value passed to this parameter specifies how much runningTotal should be incremented by each time the returned incrementor function is called.
+makeIncrementor 関数は、整数型変数　runningTotl を定義して　incrementorの戻り値であるの途中の合計を保存しています。
+この変数は0で初期化されています。
 
-makeIncrementor defines a nested function called incrementor, which performs the actual incrementing. This function simply adds amount to runningTotal, and returns the result.
+makeIncrementor 関数は、１つの整数パラメータを持ち、
+その外部名は　forIncrement　で、ローカル名は amount です。
 
-When considered in isolation, the nested incrementor function might seem unusual:
+makeIncrementor　は、　入れ子の関数 incrementor を定義し、実際の加算を行います。
+incrementor 関数は　runningTotal に　amount を加え、その結果を返すだけです。
 
+この入れ子の関数だけを見てみると、　普通ではありません。
+
+{% highlight c %}
 func incrementor() -> Int {
     runningTotal += amount
     return runningTotal
 }
-The incrementor function doesn’t have any parameters, and yet it refers to runningTotal and amount from within its function body. It does this by capturing the existing values of runningTotal and amount from its surrounding function and using them within its own function body.
+{% endhighlight %}
 
-Because it does not modify amount, incrementor actually captures and stores a copy of the value stored in amount. This value is stored along with the new incrementor function.
+incrementor 関数にはパラメータがありません、
+しかし、関数の中から　runningTotal と amount を参照しています。
 
-However, because it modifies the runningTotal variable each time it is called, incrementor captures a reference to the current runningTotal variable, and not just a copy of its initial value. Capturing a reference ensures sure that runningTotal does not disappear when the call to makeIncrementor ends, and ensures that runningTotal will continue to be available the next time that the incrementor function is called.
+amount を変更していないので、　incrementorは　amount に保存された値のコピーを受け取り、保持しています。
+このあ値は　新しい incrementor関数が存在している間保持されます。
 
-NOTE
+しかし、 runningTotal 変数は、incrementorが呼ばれるたびに変更されているので、
+初期値のコピーではなく、　現在の　runningTotal変数への参照を受け取ります。
+参照を受け取ることは、　makeIncrementorへの呼び出しが終了したときに、
+runningTotalが消滅しないことを確約します、
+つまり、incrementor関数が次に呼ばれたときにも　runningTotla変数を使い続けることができるのです。
 
-Swift determines what should be captured by reference and what should be copied by value. You don’t need to annotate amount or runningTotal to say that they can be used within the nested incrementor function. Swift also handles all memory management involved in disposing of runningTotal when it is no longer needed by the incrementor function.
-
-Here’s an example of makeIncrementor in action:
-
+動作を見てみましょう
+{% highlight c %}
 let incrementByTen = makeIncrementor(forIncrement: 10)
-This example sets a constant called incrementByTen to refer to an incrementor function that adds 10 to its runningTotal variable each time it is called. Calling the function multiple times shows this behavior in action:
+{% endhighlight %}
 
+この例では、　
+定数　incrementByTen　に、呼ばれるたびに　10　を　runningTotal変数に加える関数　incrementor を参照させています。
+
+{% highlight c %}
 incrementByTen()
 // returns a value of 10
 incrementByTen()
 // returns a value of 20
 incrementByTen()
 // returns a value of 30
-If you create another incrementor, it will have its own stored reference to a new, separate runningTotal variable. In the example below, incrementBySeven captures a reference to a new runningTotal variable, and this variable is unconnected to the one captured by incrementByTen:
+{% endhighlight %}
 
+ほかのincrementor を作るならば、そのincrementorは、
+新しい、別の runningTotal変数への参照を　incrementor自体が持ちます。
+下記の例の　incrementBySeven　は　新しい runningTotal変数を参照していて、
+incrementByTenで参照されている　runningtotal とは繋がっていません。
+
+{% highlight c %}
 let incrementBySeven = makeIncrementor(forIncrement: 7)
 incrementBySeven()
 // returns a value of 7
 incrementByTen()
 // returns a value of 40
-NOTE
-
-If you assign a closure to a property of a class instance, and the closure captures that instance by referring to the instance or its members, you will create a strong reference cycle between the closure and the instance. Swift uses capture lists to break these strong reference cycles. For more information, see Strong Reference Cycles for Closures.
+{% endhighlight %}

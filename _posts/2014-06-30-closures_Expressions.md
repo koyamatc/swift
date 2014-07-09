@@ -6,17 +6,18 @@ categories: closures
 ---
 
 クロージャは、コードを書く中で、受け渡したり使ったりできる機能を含んでいるコードのブロックです。
-
-Closures can capture and store references to any constants and variables from the context in which they are defined. This is known as closing over those constants and variables, hence the name “closures”. Swift handles all of the memory management of capturing for you.
-
+クロージャは、クロージャのコンテキスト内に定義された定数と変数への参照を受け取り、保持することができます。
+これは、それらの定数と変数を閉じ込める（closing over）として知られています。
+それゆえ、名前を"クロージャ" といいます。 
 
 グローバルや入れ子の関数は、クロージャの特別な場合です。クロージャは３つの形式をとります。
 
 + グローバル関数は名前は持ているが、どの値もキャプチャしないクロージャです。
 + 入れ子の関数は、名前があり、入れ子の関数を内包する関数から値を受け取るクロージャです。
-+ クロージャの表記は、周囲のコンテキストから値を受け取れる簡単な文法で書かれた名前のないクロージャです・
++ クロージャの表現は、周囲のコンテキストから値を受け取れる簡単な文法で書かれた名前のないクロージャです・
 
-Swift’s closure expressions have a clean, clear style, with optimizations that encourage brief, clutter-free syntax in common scenarios. These optimizations include:
+Swiftのクロージャは、最適化された短く、迷いのない構文でわかりやすく書くことができます。
+最適化には以下を含みます
 
 + Inferring parameter and return value types from context
 + Implicit returns from single-expression closures
@@ -25,9 +26,11 @@ Swift’s closure expressions have a clean, clear style, with optimizations that
 
 ### Closure Expressions
 
-Nested functions, as introduced in Nested Functions, are a convenient means of naming and defining self-contained blocks of code as part of a larger function. However, it is sometimes useful to write shorter versions of function-like constructs without a full declaration and name. This is particularly true when you work with functions that take other functions as one or more of their arguments.
+入れ子の関数は、より大きな関数の１部分として自己完結したコードブロックを定義し、名前を付けることができる便利な方法です。　しかし時には、関数みたいな構造で、完全な宣言はいらず、名前もなく、短く書けるものがあると役に立ちます。
+特に、ほかの関数を引数として受け取る関数を扱うときです。
 
-Closure expressions are a way to write inline closures in a brief, focused syntax. Closure expressions provide several syntax optimizations for writing closures in their simplest form without loss of clarity or intent. The closure expression examples below illustrate these optimizations by refining a single example of the sort function over several iterations, each of which expresses the same functionality in a more succinct way.
+クロージャ表現は、短く埋め込み型クロージャを書く方法です。
+クロージャ表現は、明確さやその意図を失うことのないもっともシンプルな形式でクロージャを書くための最適な文法を提供しています。
 
 ### The Sort Function
 
@@ -43,67 +46,108 @@ sort 関数はもとの配列と同じ型、同じサイズの新しい配列を
 let names = ["Chris", "Alex", "Ewa", "Barry", "Daniella"]
 {% endhighlight %}
 
-The sort function takes two arguments:
+sort 関数は２つ引数をとります
 
-An array of values of a known type.
-A closure that takes two arguments of the same type as the array’s contents, and returns a Bool value to say whether the first value should appear before or after the second value once the values are sorted. The sorting closure needs to return true if the first value should appear before the second value, and false otherwise.
-This example is sorting an array of String values, and so the sorting closure needs to be a function of type (String, String) -> Bool.
++ 型のわかっている配列
++ クロージャ : 配列の要素と同じ型の２つの引数をとり、　並び替えがされたときに、１番目にあった値が２番目の値の前か後ろかを表す真偽値を返します。１番目の値が２番目の値の前にあれば　true を返し、そうでなければ　false をかえします。
 
-One way to provide the sorting closure is to write a normal function of the correct type, and to pass it in as the sort function’s second parameter:
+例は、文字列値の配列を並び替えます。
+並び替えクロージャは、(String, String) -> Bool　型の関数である必要があります。
 
+１つは、　正しい型の普通の関数を書き、それを　sort 関数の２番目の引数とする方法です。
+
+{% highlight c linenos %}
 func backwards(s1: String, s2: String) -> Bool {
     return s1 > s2
 }
 var reversed = sort(names, backwards)
 // reversed is equal to ["Ewa", "Daniella", "Chris", "Barry", "Alex"]
-If the first string (s1) is greater than the second string (s2), the backwards function will return true, indicating that s1 should appear before s2 in the sorted array. For characters in strings, “greater than” means “appears later in the alphabet than”. This means that the letter "B" is “greater than” the letter "A", and the string "Tom" is greater than the string "Tim". This gives a reverse alphabetical sort, with "Barry" being placed before "Alex", and so on.
+{% endhighlight %}
 
-However, this is a rather long-winded way to write what is essentially a single-expression function (a > b). In this example, it would be preferable to write the sorting closure inline, using closure expression syntax.
+１番目の文字列 s1 が、　２番目の文字列 s2 より大きければ、　backwards 関数は true を返します。
+これは、 ならび換えられた配列の中で、　s1 は　s2 の前にあるということです。　
+
+しかし、これは　(a > b)　ということだけを表す関数を長々と書いています。
+ここでは、クロージャ表現文法を使って、　埋め込み型の並び替えクロージャを書くほうがいいでしょう。　　
 
 ### Closure Expression Syntax
 
-Closure expression syntax has the following general form:
+クロージャ表現の文法は　下記の一般形式をしています
 
+{% highlight c %}
 { (parameters) -> return type in
     statements
 }
-Closure expression syntax can use constant parameters, variable parameters, and inout parameters. Default values cannot be provided. Variadic parameters can be used if you name the variadic parameter and place it last in the parameter list. Tuples can also be used as parameter types and return types.
+{% endhighlight %}
 
-The example below shows a closure expression version of the backwards function from earlier:
+クロージャ書くときに、　定数パラメータ、変数パラメータ、 inout パラメータを使えます。
+初期値は与えられません。
+可変長パラメータは、　名前を付けて、パラメータリストの最後に置けば使えます。
+タプルも引数の型として、また返り値の型として使えます。
 
+下記は　backwards 関数の　クロージャ表現です。
+
+{% highlight c %}
 reversed = sort(names, { (s1: String, s2: String) -> Bool in
     return s1 > s2
     })
-Note that the declaration of parameters and return type for this inline closure is identical to the declaration from the backwards function. In both cases, it is written as (s1: String, s2: String) -> Bool. However, for the inline closure expression, the parameters and return type are written inside the curly braces, not outside of them.
+{% endhighlight %}
 
-The start of the closure’s body is introduced by the in keyword. This keyword indicates that the definition of the closure’s parameters and return type has finished, and the body of the closure is about to begin.
+パラメータと戻り値の型宣言は　埋め込みクロージャと　backwards 関数とで一致しています。
+どちらも　(s1: String, s2: String) -> Bool　です。
+異なるのは、埋め込みクロージャでは、　パラメータと戻り値の型は　波カッコ{} の中に書かれていることです。
 
-Because the body of the closure is so short, it can even be written on a single line:
+クロージャ本体は　in キーワードで始まります。
+このキーワードは、クロージャのパラメータと戻り値の型宣言が終わり、クロージャ本体が始まることを表します。
 
+クロージャ本体が短ければ、１行で書くこともできます。
+
+{% highlight c %}
 reversed = sort(names, { (s1: String, s2: String) -> Bool in return s1 > s2 } )
-This illustrates that the overall call to the sort function has remained the same. A pair of parentheses still wrap the entire set of arguments for the function. However, one of those arguments is now an inline closure.
+{% endhighlight %}
+
+sort関数の呼び出し方は前と同じです。
+関数の引数全体はカッコで挟まれています。
+ただし、引数の１つは埋め込みクロージャです。
 
 ### Inferring Type From Context
 
-Because the sorting closure is passed as an argument to a function, Swift can infer the types of its parameters and the type of the value it returns from the type of the sort function’s second parameter. This parameter is expecting a function of type (String, String) -> Bool. This means that the String, String, and Bool types do not need to be written as part of the closure expression’s definition. Because all of the types can be inferred, the return arrow (->) and the parentheses around the names of the parameters can also be omitted:
+並び替えクロージャは関数に引数として渡されているので、
+Swiftは、　sort関数の２番目のパラメータから、クロージャのパラメータの型と戻り値の型を推測します。
+このパラメータは(String, String) -> Bool型の関数であると期待します。
+このことは、　クロージャを定義するときに、　String、 String、 と Bool 型を書く必要はないという意味です。
+すべての型は推測されるので、戻り値の矢印(->) やパラメータ名を囲うカッコも取り去ることができます。
 
+{% highlight c %}
 reversed = sort(names, { s1, s2 in return s1 > s2 } )
-It is always possible to infer parameter types and return type when passing a closure to a function as an inline closure expression. As a result, you rarely need to write an inline closure in its fullest form.
+{% endhighlight %}
 
-Nonetheless, you can make the types explicit if you wish, and doing so is encouraged if it avoids ambiguity for readers of your code. In the case of the sort function, the purpose of the closure is clear from the fact that sorting is taking place, and it is safe for a reader to assume that the closure is likely to be working with String values, because it is assisting with the sorting of an array of strings.
+埋め込みクロージャという書き方で書いたクロージャを関数に渡せは、常にパラメータと戻り値の型は推測されます。
+結果として、埋め込みクロージャを必要十分な形式で書くだけです。
+
+言うまでもなく、型を明確に指定することもできますし、コードの読み手がわかりずらくなることを避けられます。
+
 
 ### Implicit Returns from Single-Expression Closures
 
-Single-expression closures can implicitly return the result of their single expression by omitting the return keyword from their declaration, as in this version of the previous example:
+単一表現のクロージャは、宣言から　return キーワードを外すことによって結果を返すことができます。
 
+{% highlight c %}
 reversed = sort(names, { s1, s2 in s1 > s2 } )
-Here, the function type of the sort function’s second argument makes it clear that a Bool value must be returned by the closure. Because the closure’s body contains a single expression (s1 > s2) that returns a Bool value, there is no ambiguity, and the return keyword can be omitted.
+{% endhighlight %}
+
+sort 関数の第２引数である関数型から、クロージャが返す値が論理値であることは明らかです。
+クロージャ本体には、　論理値を返す単一表現　(s1 > s2)があるので、
+不明瞭さはなく　キーワード　return を省くことができます。 
 
 ### Shorthand Argument Names
 
-Swift automatically provides shorthand argument names to inline closures, which can be used to refer to the values of the closure’s arguments by the names $0, $1, $2, and so on.
+Swift は埋め込みクロージャに短縮引数名を自動的に与えます。
+$0, $1, $2　... という名前でクロージャの引数を参照できます 
 
-If you use these shorthand argument names within your closure expression, you can omit the closure’s argument list from its definition, and the number and type of the shorthand argument names will be inferred from the expected function type. The in keyword can also be omitted, because the closure expression is made up entirely of its body:
+クロージャを書くときに、短縮引数名を使うときは、　クロージャの引数リストを省くことができます。
+短縮引数名の番号と型は、期待された関数の型から推測されます。
+in キーワードも省けます、なぜならクロージャは本体のみから成り立っているからです。
 
 {% highlight c %}
 reversed = sort(names, { $0 > $1 } )

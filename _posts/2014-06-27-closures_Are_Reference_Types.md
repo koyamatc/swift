@@ -5,12 +5,17 @@ postTitle:  Closures Are Reference Types
 categories: closures
 ---
 
-In the example above, incrementBySeven and incrementByTen are constants, but the closures these constants refer to are still able to increment the runningTotal variables that they have captured. This is because functions and closures are reference types.
+前出の incrementBySeven と incrementByTen は定数です。
+しかし、定数が参照しているクロージャは、受け取った　runningTotal変数を加算できます。
+これは、関数とクロージャは参照型ということです。
 
-Whenever you assign a function or a closure to a constant or a variable, you are actually setting that constant or variable to be a reference to the function or closure. In the example above, it is the choice of closure that incrementByTen refers to that is constant, and not the contents of the closure itself.
+関数またはクロージャを定数または変数に代入することは、
+その定数または変数を、関数またはクロージャを参照するように設定することです。
 
-This also means that if you assign a closure to two different constants or variables, both of those constants or variables will refer to the same closure:
+２つの異なる定数、または変数に同じクロージャを代入すると、２つの定数または変数は、同じクロージャを参照するという意味です。
 
+{% highlight c%}
 let alsoIncrementByTen = incrementByTen
 alsoIncrementByTen()
 // returns a value of 50
+{% endhighlight %}
