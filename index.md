@@ -93,7 +93,7 @@ layout: default
 	<div class="col-sm-3">
 		<h4><span class="label label-info">Classes and Structures</span></h4>
 		<ol class="post-list">
- 			{% for post in site.categories.class_structure %}
+ 			{% for post in site.categories.classes_and_structures %}
    				<li><a href="{{ post.url }}">{{ post.postTitle }}</a></li>
  			{% endfor %}
 		</ol>			

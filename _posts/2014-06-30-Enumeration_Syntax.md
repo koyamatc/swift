@@ -42,15 +42,21 @@ enum Planet {
 }
 {% endhighlight %}
 
-Each enumeration definition defines a brand new type. Like other types in Swift, their names (such as CompassPoint and Planet) should start with a capital letter. Give enumeration types singular rather than plural names, so that they read as self-evident:
+上記２つの列挙の定義は、それぞれにまったく新しい型を定義しています。　
+Swiftの他の型同様に、型の名前は大文字で始めます。
+列挙型の名前は見てわかる単一の名前を付けます。
 
 {% highlight c %}
 var directionToHead = CompassPoint.West
 {% endhighlight %}
 
-The type of directionToHead is inferred when it is initialized with one of the possible values of CompassPoint. Once directionToHead is declared as a CompassPoint, you can set it to a different CompassPoint value using a shorter dot syntax:
+directiontoHeadの型は　CompassPointが有効な値で初期化されると推測されます。
+CompassPoint として　directonToHead が宣言されたならば、
+より短いドット構文を使い、別の　CompassPointの値を、　directionToHead に設定することができます。 
 
 {% highlight c %}
 directionToHead = .East
 {% endhighlight %}
-The type of directionToHead is already known, and so you can drop the type when setting its value. This makes for highly readable code when working with explicitly-typed enumeration values.
+
+directionToHeadの型はすでにわかっているので、値を設定するときにその型を省くことができます。
+型が明白な値を扱うときは、とても読みやすいコードとなります。
