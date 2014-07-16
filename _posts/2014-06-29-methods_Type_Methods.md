@@ -5,12 +5,18 @@ postTitle:  Type Methods
 categories: methods
 ---
 
+インスタンス　メソッドは、特定の型のインスタンス上にあるメソッドです。
+型自体にあるメソッドを定義することができます。
+このようなメソッドを型メソッドといいます。
+型メソッドを指定するには、
+クラスでは、メソッドの funcキーワードの前に、class キーワードを書きます、
+構造体と列挙では、　funcキーワードの前に、static キーワードを書きます。
 
-Instance methods, as described above, are methods that are called on an instance of a particular type. You can also define methods that are called on the type itself. These kinds of methods are called type methods. You indicate type methods for classes by writing the keyword class before the method’s func keyword, and type methods for structures and enumerations by writing the keyword static before the method’s func keyword.
-
-NOTE
-
-In Objective-C, you can define type-level methods only for Objective-C classes. In Swift, you can define type-level methods for all classes, structures, and enumerations. Each type method is explicitly scoped to the type it supports.
+<div class="panel">
+    <div class="panel-heading">NOTE</div>
+    Objective-Cでは、タイプれべるのメソッドは、クラスにしか定義できません。
+    Swiftでは、クラス、構造体、列挙とすべてに定義できます。
+</div>
 
 型メソッドは、ドット構文で呼び出します。
 しかし、その型に定義した型メソッドを呼ぶのであって、型のインスタンスのメソッドをよぶのではない。
@@ -24,9 +30,10 @@ class SomeClass {
 SomeClass.someTypeMethod()
 {% endhighlight %}
 
-型メソッド本体内にある、暗黙のselfプロパティは、型それ自体を暗誦しています、
+型メソッド本体内にある、暗黙のselfプロパティは、型それ自体を参照しています、
 型のインスタンスではありません。
 構造体と列挙では、selfを使うことで、静的なプロパティと静的なメソッドパラメータをはっきりと区別できます。
+
 
 More generally, any unqualified method and property names that you use within the body of a type method will refer to other type-level methods and properties. A type method can call another type method with the other method’s name, without needing to prefix it with the type name. Similarly, type methods on structures and enumerations can access static properties by using the static property’s name without a type name prefix.
 
@@ -72,11 +79,16 @@ LevelTrackerはhighestUnlockedLevelプロパティを扱うために
 （これらの型メソッドは　LevelTracker.highestUnlockedLevel　と書く必要無しに
 静的プロパティhighestUnlockedLevelにアクセスできます。）
 
-In addition to its static property and type methods, LevelTracker tracks an individual player’s progress through the game. It uses an instance property called currentLevel to track the level that a player is currently playing.
+staticなプロパティと型メソッドに加えて、　LevelTrackerは個人プレイヤの進捗を追跡します。
+そのために、インスタンス　プロパティcurrentLevelを使い、現在プレイしているレベルを記録しています。
 
-To help manage the currentLevel property, LevelTracker defines an instance method called advanceToLevel. Before updating currentLevel, this method checks whether the requested new level is already unlocked. The advanceToLevel method returns a Boolean value to indicate whether or not it was actually able to set currentLevel.
+currentLevelプロパティを管理するために、
+LevelTrackerは、インスタンス　メソッド　advanceToLevel を定義しています。
+currentLeveが更新される前に、このメソッドが、要求された新しいレベルがすでに解放されているかどうかを検査します。
+advanceToLevel メソッドは、　currentLevelをセットできるかどうかの論理値を返します。
 
-The LevelTracker structure is used with the Player class, shown below, to track and update the progress of an individual player:
+下記の　Playerクラスでは、　LevelTrafker構造体が使われていて、
+個々のプレイヤ進捗状況を追跡し更新しています。
 
 {% highlight c %}
 class Player {
@@ -92,9 +104,13 @@ class Player {
 }
 {% endhighlight %}
 
-The Player class creates a new instance of LevelTracker to track that player’s progress. It also provides a method called completedLevel, which is called whenever a player completes a particular level. This method unlocks the next level for all players and updates the player’s progress to move them to the next level. (The Boolean return value of advanceToLevel is ignored, because the level is known to have been unlocked by the call to LevelTracker.unlockLevel on the previous line.)
+Playerクラスは、プレイヤの進捗を管理するため LevelTrackerの新しいインスタンスを生成します。　
+プレイヤがレベルをクリアしたときに呼ばれるメソッド　completedLevel も提供します。
+このメソッドは、すべてのプレイヤのために次のレベルを解放し、
+また、プレイヤの進捗を次のレベルへと移動させます。
 
-You can create a instance of the Player class for a new player, and see what happens when the player completes level one:
+新しいプレイヤのために、　Playerクラスのインスタンスを作れます。
+そのプレイヤがレベル１をクリアすると何が起きるか見てみましょう。
 
 {% highlight c %}
 var player = Player(name: "Argyrios")
@@ -103,7 +119,8 @@ println("highest unlocked level is now \(LevelTracker.highestUnlockedLevel)")
 // prints "highest unlocked level is now 2"
 {% endhighlight %}
 
-If you create a second player, whom you try to move to a level that is not yet unlocked by any player in the game, the attempt to set the player’s current level fails:
+２番目のプレイヤを作り、まだ解放されていないレベルへ移動しようとします、
+そのプレイヤの現在のレベルをセットする試みは失敗します。
 
 {% highlight c %}
 player = Player(name: "Beto")

@@ -5,26 +5,39 @@ postTitle:  Type Properties
 categories: properties
 ---
 
-Instance properties are properties that belong to an instance of a particular type. Every time you create a new instance of that type, it has its own set of property values, separate from any other instance.
+インスタンス　プロパティは、特定の型のインスタンスに属するプロパティです。
+その型のインスタンスを新しく作ると、そのインスタンスは、独自にプロパティ値を持ちます。
 
-You can also define properties that belong to the type itself, not to any one instance of that type. There will only ever be one copy of these properties, no matter how many instances of that type you create. These kinds of properties are called type properties.
+型自体に属するプロパティを定義することもできます。
+どんなにたくさんのインスタンスを作っても、たった１つのプロパティのコピーしか存在しません。
+このようなプロパティを型プロパティといいます。
 
-Type properties are useful for defining values that are universal to all instances of a particular type, such as a constant property that all instances can use (like a static constant in C), or a variable property that stores a value that is global to all instances of that type (like a static variable in C).
+型プロパティは、すべてに共通な値を定義するのに役立ちます。
+すべてのインスタンスが使える定数プロパティや、
+すべてのインスタンスに対しグローバルな値を保存する変数プロパティなど。
 
-For value types (that is, structures and enumerations), you can define stored and computed type properties. For classes, you can define computed type properties only.
+バリュー型（構造体、列挙）では、ストアドと計算型プロパティを定義できます。
+クラスには、計算型プロパティだけができぎできます。
 
-Stored type properties for value types can be variables or constants. Computed type properties are always declared as variable properties, in the same way as computed instance properties.
+ヴァリュー型のストアド型プロパティは変数か定数になれます。
+研鑽型プロパティは常に変数プロパティとして宣言されなければなりません。
 
-NOTE
+<div class="panel">
+    <div class="panel-heading">NOTE</div>
+    ストアド　インスタンス　プロパティとは違い、
+    ストアド型プロパティには、初期値を与えなければならない。
+    なぜなら、型それ自体はイニシャライザーを持たないので、
+    初期化時にストアド型プロパティに値を設定することができないからです。
+</div>
 
-Unlike stored instance properties, you must always give stored type properties a default value. This is because the type itself does not have an initializer that can assign a value to a stored type property at initialization time.
 
 ###Type Property Syntax
 
 In C and Objective-C, you define static constants and variables associated with a type as global static variables. In Swift, however, type properties are written as part of the type’s definition, within the type’s outer curly braces, and each type property is explicitly scoped to the type it supports.
 
-You define type properties for value types with the static keyword, and type properties for class types with the class keyword. The example below shows the syntax for stored and computed type properties:
-
+型プロパティを定義するには、
+ヴァリュー型には、　static キーワードを付けます。
+クラスには、　classキーワードを付けます
 {% highlight c %}
 struct SomeStructure {
     static var storedTypeProperty = "Some value."
@@ -45,9 +58,12 @@ class SomeClass {
 }
 {% endhighlight %}
 
-NOTE
+<div class="panel">
+    <div class="panel-heading">NOTE</div>
+    上記の、計算型プロパティは、リードオンリですが、
+    リードライトの計算型プロパティを定義することもできます。
+</div>
 
-The computed type property examples above are for read-only computed type properties, but you can also define read-write computed type properties with the same syntax as for computed instance properties.
 
 ###Querying and Setting Type Properties
 
