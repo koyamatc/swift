@@ -5,27 +5,38 @@ postTitle:  Overriding
 categories: inheritance
 ---
 
-A subclass can provide its own custom implementation of an instance method, class method, instance property, or subscript that it would otherwise inherit from a superclass. This is known as overriding.
+サブクラスは、スーパークラスから継承してくる代わりに、サブクラス自体で、
+インスタンスメソッド、クラスメソッド、インスタンスプロパティ、添え字型を実装できます。
+これを _オーバーライド_ といいます。
 
-To override a characteristic that would otherwise be inherited, you prefix your overriding definition with the override keyword. Doing so clarifies that you intend to provide an override and have not provided a matching definition by mistake. Overriding by accident can cause unexpected behavior, and any overrides without the override keyword are diagnosed as an error when your code is compiled.
+オーバーライドするためには、　overrideキーワードを使います。
 
-The override keyword also prompts the Swift compiler to check that your overriding class’s superclass (or one of its parents) has a declaration that matches the one you provided for the override. This check ensures that your overriding definition is correct.
+### Accessing Superclass Methods, Properties, and Subscripts
 
-Accessing Superclass Methods, Properties, and Subscripts
+オーバーライドして、メソッド、プロパティ、添え字型をサブクラスに提供するときに、
+オーバーライドしたコードの中で、すでにあるスーパークラスに実装されているものを使うことが役に立つこともあります。
 
-When you provide a method, property, or subscript override for a subclass, it is sometimes useful to use the existing superclass implementation as part of your override. For example, you can refine the behavior of that existing implementation or store a modified value in an existing inherited variable.
+スーパークラスのメソッド、プロパティ、添え字型にアクセスするには、　接頭語 super　を使います
 
-Where this is appropriate, you access the superclass version of a method, property, or subscript by using the super prefix:
++ オーバーライドされたメソッド someMethod は、　この中で　スーパークラスのメソッド　someMethodを
+super.someMethod()　で呼び出せます。
 
-An overridden method named someMethod can call the superclass version of someMethod by calling super.someMethod() within the overriding method implementation.
-An overridden property called someProperty can access the superclass version of someProperty as super.someProperty within the overriding getter or setter implementation.
-An overridden subscript for someIndex can access the superclass version of the same subscript as super[someIndex] from within the overriding subscript implementation.
-Overriding Methods
++ オーバーライドされたプロパティ someProperty は　
+オーバーライドしているゲッタまあはセッタの実装の中で　
+スーパークラスのプロパティ　somePropertyを
+super.someProperty　でアクセスできます。
 
-You can override an inherited instance or class method to provide a tailored or alternative implementation of the method within your subclass.
++ オーバーライドされた　someIndex　用の添え字型は　
+オーバーライドしている添え字型の実装の中で　
+スーパークラスの添え字型を　super[someIndex]でアクセスできます。
 
-The following example defines a new subclass of Vehicle called Car, which overrides the description method it inherits from Vehicle:
+### Overriding Methods
 
+継承した　インスタンスうやクラス　メソッドをオーバーライドできます。
+
+次の例は、　Vehicleのサブクラス Car を定義して、　
+Vehicle から継承したメソッド　description をオーバーライドしています。
+{% highlight c %}
 class Car: Vehicle {
     var speed: Double = 0.0
     init() {
@@ -38,33 +49,44 @@ class Car: Vehicle {
             + "traveling at \(speed) mph"
     }
 }
-Car declares a new stored Double property called speed. This property defaults to 0.0, meaning “zero miles per hour”. Car also has a custom initializer, which sets the maximum number of passengers to 5, and the default number of wheels to 4.
+{% endhighlight %}
 
-Car overrides its inherited description method by providing a method with the same declaration as the description method from Vehicle. The overriding method definition is prefixed with the override keyword.
+Car で新しく宣言された　ストアドのDouble型プロパティ　speed があり初期値は　0.0　です。
+カスタム　イニシャライザがあり、中で　maxPassengers が　5　に、
+numberOfWheels が　4 にセットされています。
 
-Rather than providing a completely custom implementation of description, the overriding method actually starts by calling super.description to retrieve the description provided by Vehicle. It then appends some additional information about the car’s current speed.
+Car は、description メソッドをオーバーライドしています。
 
-If you create a new instance of Car, and print the output of its description method, you can see that the description has indeed changed:
-
+{% highlight c %}
 let car = Car()
 println("Car: \(car.description())")
 // Car: 4 wheels; up to 5 passengers; traveling at 0.0 mph
-Overriding Properties
+{% endhighlight %}
 
-You can override an inherited instance or class property to provide your own custom getter and setter for that property, or to add property observers to enable the overriding property to observe when the underlying property value changes.
+<h3>Overriding Properties</h3>
 
-Overriding Property Getters and Setters
+継承したインスタンス　または　クラスのプロパティをオーバーライドして、
+独自のセッタとゲッタを提供できます。
+また、プロパティ　オブザーバを追加してそのプロパティ値が変更されたかを監視できます。
 
-You can provide a custom getter (and setter, if appropriate) to override any inherited property, regardless of whether the inherited property is implemented as a stored or computed property at its source. The stored or computed nature of an inherited property is not known by a subclass—it only knows that the inherited property has a certain name and type. You must always state both the name and the type of the property you are overriding, to enable the compiler to check that your override matches a superclass property with the same name and type.
+<h3>Overriding Property Getters and Setters</h3>
 
-You can present an inherited read-only property as a read-write property by providing both a getter and a setter in your subclass property override. You cannot, however, present an inherited read-write property as a read-only property.
+継承したプロパティをオーバーライドして、独自のゲッタ（必要なら　セッタ）を提供できます。
+継承元のプロパティが、ストアドでも計算型でも構いません。
 
-NOTE
+継承もとのプロパティが　リードオンリでも、オーバーライドしてゲッタとセッタを提供することで
+リードライト型にすることができます。
+しかし、元がリードライト型のプロパティをリードオンリにはできません。
 
-If you provide a setter as part of a property override, you must also provide a getter for that override. If you don’t want to modify the inherited property’s value within the overriding getter, you can simply pass through the inherited value by returning super.someProperty from the getter, as in the SpeedLimitedCar example below.
+<div class="panel">
+    <div class="panel-heading">NOTE</div>
+    プロパティをオーバーライドして、セッタを提供するならば。
+    ゲッタも提供しまければならない。
+    オーバーライドしているゲッタの中で、継承したプロパティ値を変更したくないのであれば、
+    superの値を返して、継承された値を渡せばいい。
+</div>
 
-The following example defines a new class called SpeedLimitedCar, which is a subclass of Car. The SpeedLimitedCar class represents a car that has been fitted with a speed-limiting device, which prevents the car from traveling faster than 40mph. You implement this limitation by overriding the inherited speed property:
-
+{% highlight c %}
 class SpeedLimitedCar: Car {
     override var speed: Double  {
     get {
@@ -75,26 +97,36 @@ class SpeedLimitedCar: Car {
     }
     }
 }
-Whenever you set the speed property of a SpeedLimitedCar instance, the property’s setter implementation checks the new value and limits it to 40mph. It does this by setting the underlying speed property of its superclass to be the smaller of newValue and 40.0. The smaller of these two values is determined by passing them to the min function, which is a global function provided by the Swift standard library. The min function takes two or more values and returns the smallest one of those values.
+{% endhighlight %}
 
-If you try to set the speed property of a SpeedLimitedCar instance to more than 40mph, and then print the output of its description method, you see that the speed has been limited:
+SpeedLimitedCar インスタンスの　プロパティspeedを　40mph以上にセットしようとしても、
+descriptionメソッドの出力は、　speedは制限されているように表示されます。
 
+{% highlight c %}
 let limitedCar = SpeedLimitedCar()
 limitedCar.speed = 60.0
 println("SpeedLimitedCar: \(limitedCar.description())")
 // SpeedLimitedCar: 4 wheels; up to 5 passengers; traveling at 40.0 mph
-Overriding Property Observers
+{% endhighlight %}
 
-You can use property overriding to add property observers to an inherited property. This enables you to be notified when the value of the inherited property changes, regardless of how that property was originally implemented. For more information on property observers, see Property Observers.
+<h3>Overriding Property Observers</h3>
 
-NOTE
+継承されたプロパティに、オーバーライドしてプロパティ　オブザーバを追加できます。
+これにより、継承されたプロパティの値が変更されると、通知を受けることができます。
 
-You cannot add property observers to inherited constant stored properties or inherited read-only computed properties. The value of these properties cannot be set, and so it is not appropriate to provide a willSet or didSet implementation as part of an override.
+<div class="panel">
+    <div class="panel-heading">NOTE</div>
+    プロパティオブザーバを継承した定数ストアドプロパティや継承したリードオンリ計算プロパティに追加することはできません。なぜならこれらのプロパティ値はセットできないからです。
+</div>
 
-Note also that you cannot provide both an overriding setter and an overriding property observer. If you want to observe changes to a property’s value, and you are already providing a custom setter for that property, you can simply observe any value changes from within the custom setter.
+セッタをオーバーライドしていてプロパティオブザーバもオーバーライドすることはできません。
+プロパティの値が変化したことを監視したいならば、
+そのプロパティ用に独自のセッタをすでに提供していると思うので、
+単に、独自のセッタで　値の変化を監視することができます。
 
-The following example defines a new class called AutomaticCar, which is a subclass of Car. The AutomaticCar class represents a car with an automatic gearbox, which automatically selects an appropriate gear to use based on the current speed. AutomaticCar also provides a custom description method to print the current gear.
+新しいクラス　AutomatiCar を　Carのサブクラスとして定義しています。
 
+{% highlight c %}
 class AutomaticCar: Car {
     var gear = 1
     override var speed: Double {
@@ -106,9 +138,13 @@ class AutomaticCar: Car {
         return super.description() + " in gear \(gear)"
     }
 }
-Whenever you set the speed property of an AutomaticCar instance, the property’s didSet observer automatically sets the gear property to an appropriate choice of gear for the new speed. Specifically, the property observer chooses a gear which is the new speed value divided by 10, rounded down to the nearest integer, plus 1. A speed of 10.0 produces a gear of 1, and a speed of 35.0 produces a gear of 4:
+{% endhighlight %}
 
+AutomaticCarインスタンスのspeedプロパティに値がセットされるたびに、
+そのプロパティの　didSetオブザーバが自動的にgearプロパティをセットします。
+{% highlight c %}
 let automatic = AutomaticCar()
 automatic.speed = 35.0
 println("AutomaticCar: \(automatic.description())")
 // AutomaticCar: 4 wheels; up to 5 passengers; traveling at 35.0 mph in gear 4
+{% endhighlight %}

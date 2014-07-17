@@ -5,12 +5,16 @@ postTitle:  Subscript Options
 categories: subscripts
 ---
 
-Subscripts can take any number of input parameters, and these input parameters can be of any type. Subscripts can also return any type. Subscripts can use variable parameters and variadic parameters, but cannot use in-out parameters or provide default parameter values.
+添え字は、入力パラメータをいくつでも受け取れます、
+そのパラメータはどんな型でも構わない。
+添え字は、どんな型も返すことができます。
+添え字は、変数パラメータや可変長パラメータを使えます。
+しかし、 in-outパラメータは使えず、初期値を与えることもできません。
 
-A class or structure can provide as many subscript implementations as it needs, and the appropriate subscript to be used will be inferred based on the types of the value or values that are contained within the subscript braces at the point that the subscript is used. This definition of multiple subscripts is known as subscript overloading.
+クラスや構造体は必要に応じてｍ多くの添え字型を実装することができます。
+複数の添え字型の定義のことを、添え字型のオーバーロードといいます。
 
-While it is most common for a subscript to take a single parameter, you can also define a subscript with multiple parameters if it is appropriate for your type. The following example defines a Matrix structure, which represents a two-dimensional matrix of Double values. The Matrix structure’s subscript takes two integer parameters:
-
+１つのパラメータをとる添え字型が一般的ですが、複数のパラメータをとる添え字型を定義できます。
 {% highlight c %}
 struct Matrix {
     let rows: Int, columns: Int
@@ -36,34 +40,33 @@ struct Matrix {
 }
 {% endhighlight %}
 
-Matrix provides an initializer that takes two parameters called rows and columns, and creates an array that is large enough to store rows * columns values of type Double. Each position in the matrix is given an initial value of 0.0. To achieve this, the array’s size, and an initial cell value of 0.0, are passed to an array initializer that creates and initializes a new array of the correct size. This initializer is described in more detail in Creating and Initializing an Array.
-
-You can construct a new Matrix instance by passing an appropriate row and column count to its initializer:
+Matrixにはイニシャライザがあり、２つのパラメータ　rows と　colums　を受け取り、
+初期値0.0で　rows * columns の配列を作ります。
 
 {% highlight c %}
 var matrix = Matrix(rows: 2, columns: 2)
 {% endhighlight %}
 
-The preceding example creates a new Matrix instance with two rows and two columns. The grid array for this Matrix instance is effectively a flattened version of the matrix, as read from top left to bottom right:
+２行２列の　Matrixインスタンスmatrixが生成されます。
 
-image: ../Art/subscriptMatrix01_2x.png
-Values in the matrix can be set by passing row and column values into the subscript, separated by a comma:
-
+matrixに値をセットするには
 {% highlight c %}
 matrix[0, 1] = 1.5
 matrix[1, 0] = 3.2
 {% endhighlight %}
-These two statements call the subscript’s setter to set a value of 1.5 in the top right position of the matrix (where row is 0 and column is 1), and 3.2 in the bottom left position (where row is 1 and column is 0):
 
-image: ../Art/subscriptMatrix02_2x.png
-The Matrix subscript’s getter and setter both contain an assertion to check that the subscript’s row and column values are valid. To assist with these assertions, Matrix includes a convenience method called indexIsValidForRow(_:column:), which checks whether the requested row and column are inside the bounds of the matrix:
+添え字型のセッタを呼び出して、値をセットしています。
 
+Matrixの添え字のゲッタとセッタは、添え字の行と列の値が有効であるか検査するための警告機能を持っています。
+この警告機能を支援するために、　Matrixは、便利なメソッドindexIsValidForRow(_:column:)があり、与えられた行と列の値が、　matrixの範囲内に納まっているか検査できます。　
 {% highlight c %}
 func indexIsValidForRow(row: Int, column: Int) -> Bool {
     return row >= 0 && row < rows && column >= 0 && column < columns
 }
 {% endhighlight %}
+
 An assertion is triggered if you try to access a subscript that is outside of the matrix bounds:
+matrixの範囲外の添え字でアクセスしようとすると、　警告が表示されます。
 
 {% highlight c %}
 let someValue = matrix[2, 2]

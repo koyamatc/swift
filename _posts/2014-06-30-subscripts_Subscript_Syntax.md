@@ -42,10 +42,10 @@ let threeTimesTable = TimesTable(multiplier: 3)
 println("six times three is \(threeTimesTable[6])")
 // prints "six times three is 18"
 {% endhighlight %}
-In this example, a new instance of TimesTable is created to represent the three-times-table. This is indicated by passing a value of 3 to the structure’s initializer as the value to use for the instance’s multiplier parameter.
 
-You can query the threeTimesTable instance by calling its subscript, as shown in the call to threeTimesTable[6]. This requests the sixth entry in the three-times-table, which returns a value of 18, or 3 times 6.
+three-times-tableを表すために、　TimeTableのインスタンスを作成しています。
+値３を構造体TimesTableのイニシャライザに渡し、インスタンスの multiplier パラメータとして使っています。
 
-NOTE
-
-An n-times-table is based on a fixed mathematical rule. It is not appropriate to set threeTimesTable[someIndex] to a new value, and so the subscript for TimesTable is defined as a read-only subscript.
+threeTimesTableインスタンスに、添え字を付けて呼び出すことで問い合わせができます。
+threeTimesTable[6]　は、　three-times-tableに　６回のエントリを求めています。
+返される値は　18、　または　3 x 6 です。
