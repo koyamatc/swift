@@ -87,7 +87,7 @@ default:
 {% endhighlight %}
 
 
-### No Implicit Fallthrough
+<h3>No Implicit Fallthrough</h3>
 
 C と Objective-C　とは対照的に、　
 Swift の　swich 文は、　case 文の最後から　次の　case 文へと落ちていきません。

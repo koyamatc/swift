@@ -5,20 +5,22 @@ postTitle:  Setting Initial Values for Stored Properties
 categories: initialization
 ---
 
-Classes and structures must set all of their stored properties to an appropriate initial value by the time an instance of that class or structure is created. Stored properties cannot be left in an indeterminate state.
+クラスと構造体は、これらが生成されるときにすべてのストアドプロパティに初期値が設定されていなければならない。
 
-You can set an initial value for a stored property within an initializer, or by assigning a default property value as part of the property’s definition. These actions are described in the following sections.
+初期値はイニシャライザの中で設定するか、プロパティの定義の中で初期値を代入することができす。
+<div class="panel">
+	<div class="panel-heading">NOTE</div>
+	イニシャライザの中で初期値がセットされた場合、プロパティオブザーバは呼び出されません。
+</div>
 
-NOTE
+### Initializers
 
-When you assign a default value to a stored property, or set its initial value within an initializer, the value of that property is set directly, without calling any property observers.
+イニシャライザは、特定の型の新しいインスタンスが生成されるときに呼ばれます。
+最も簡単な形式は、　init キーワードを使った、パラメータのないインスタンスメソッドのようです。
 
-Initializers
-
-Initializers are called to create a new instance of a particular type. In its simplest form, an initializer is like an instance method with no parameters, written using the init keyword.
-
-The example below defines a new structure called Fahrenheit to store temperatures expressed in the Fahrenheit scale. The Fahrenheit structure has one stored property, temperature, which is of type Double:
-
+構造体　Fahrenheit です。
+Fahrenheitは、Double型のストアドプロパティ　temperature　があります。 
+{% highlight c %}
 struct Fahrenheit {
     var temperature: Double
     init() {
@@ -28,19 +30,26 @@ struct Fahrenheit {
 var f = Fahrenheit()
 println("The default temperature is \(f.temperature)° Fahrenheit")
 // prints "The default temperature is 32.0° Fahrenheit"
-The structure defines a single initializer, init, with no parameters, which initializes the stored temperature with a value of 32.0 (the freezing point of water when expressed in the Fahrenheit scale).
+{% endhighlight %}
 
-Default Property Values
+この構造体には、パラメータをもたない１つのイニシャライザ　init があります。
+これは、ストアドのtemperature　を　値　32.0　で初期化します。　
 
-You can set the initial value of a stored property from within an initializer, as shown above. Alternatively, specify a default property value as part of the property’s declaration. You specify a default property value by assigning an initial value to the property when it is defined.
+<h3>Default Property Values</h3>
 
-NOTE
+一方、プロパティの宣言時に、初期プロパティ値を指定することができます。
 
-If a property always takes the same initial value, provide a default value rather than setting a value within an initializer. The end result is the same, but the default value ties the property’s initialization more closely to its declaration. It makes for shorter, clearer initializers and enables you to infer the type of the property from its default value. The default value also makes it easier for you to take advantage of default initializers and initializer inheritance, as described later in this chapter.
+<div class="panel">
+	<div class="panel-heading">NOTE</div>
+	もしプロパティがいつも同じ初期値をとるのなら、イニシャライザの中でセットするのではなく、
+	プロパティの宣言で初期プロパティ値を与えるほうがよい。
+	最終結果は同じでも、初期値が、イニシャライザよりも宣言と結びついていたほうが、
+	イニシャライザを短く、明瞭にすることができ、初期値から、型推論をすることができる。
+</div>
 
-You can write the Fahrenheit structure from above in a simpler form by providing a default value for its temperature property at the point that the property is declared:
-
+初期値を与えた　より短くなった　Fahrenheit 構造体です。
+{% highlight c %}
 struct Fahrenheit {
     var temperature = 32.0
 }
-Customizing Initiali
+{% endhighlight %}
