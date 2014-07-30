@@ -5,11 +5,16 @@ postTitle:  Class Inheritance and Initialization
 categories: initialization
 ---
 
-All of a class’s stored properties—including any properties the class inherits from its superclass—must be assigned an initial value during initialization.
+クラスのすべてのストアド・プロパティ（スーパークラスから継承したものも含め）は、
+初期化中に初期値が設定されなければならない。
 
-Swift defines two kinds of initializers for class types to help ensure all stored properties receive an initial value. These are known as designated initializers and convenience initializers.
+Swiftには、クラス型がすべてのプロパティに初期値が設定されたかを確認するのに
+２種類のイニシャライザが定義されています。
 
-Designated Initializers and Convenience Initializers
++ designated initializer
++ convenience initializer
+
+### Designated Initializers and Convenience Initializers
 
 Designated initializers are the primary initializers for a class. A designated initializer fully initializes all properties introduced by that class and calls an appropriate superclass initializer to continue the initialization process up the superclass chain.
 
@@ -21,20 +26,20 @@ Convenience initializers are secondary, supporting initializers for a class. You
 
 You do not have to provide convenience initializers if your class does not require them. Create convenience initializers whenever a shortcut to a common initialization pattern will save time or make initialization of the class clearer in intent.
 
-Initializer Chaining
+### Initializer Chaining
 
 To simplify the relationships between designated and convenience initializers, Swift applies the following three rules for delegation calls between initializers:
 
-Rule 1
+#### Rule 1
 Designated initializers must call a designated initializer from their immediate superclass.
 
-Rule 2
+#### Rule 2
 Convenience initializers must call another initializer available in the same class.
 
-Rule 3
+#### Rule 3
 Convenience initializers must ultimately end up calling a designated initializer.
 
-A simple way to remember this is:
+### A simple way to remember this is:
 
 Designated initializers must always delegate up.
 Convenience initializers must always delegate across.

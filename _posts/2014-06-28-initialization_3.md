@@ -5,29 +5,44 @@ postTitle:  Default Initializers
 categories: initialization
 ---
 
-Swift provides a default initializer for any structure or base class that provides default values for all of its properties and does not provide at least one initializer itself. The default initializer simply creates a new instance with all of its properties set to their default values.
+Swift は構造体または基本クラス用にデフォルト・イニシャライザを提供し、
+プロパティすべての初期値を設定します。
+デフォルト・イニシャライザは単に、プロパティに初期値がセットされた新しいインスタンスを生成するだけです。
 
-This example defines a class called ShoppingListItem, which encapsulates the name, quantity, and purchase state of an item in a shopping list:
+ShoppingListItemクラスを定義し、
+ショッピング・リストの商品の名前、数量、購入状態をカプセル化する例です。
 
+{% highlight c %}
 class ShoppingListItem {
     var name: String?
     var quantity = 1
     var purchased = false
 }
 var item = ShoppingListItem()
-Because all properties of the ShoppingListItem class have default values, and because it is a base class with no superclass, ShoppingListItem automatically gains a default initializer implementation that creates a new instance with all of its properties set to their default values. (The name property is an optional String property, and so it automatically receives a default value of nil, even though this value is not written in the code.) The example above uses the default initializer for the ShoppingListItem class to create a new instance of the class with initializer syntax, written as ShoppingListItem(), and assigns this new instance to a variable called item.
+{% endhighlight %}
 
-Memberwise Initializers for Structure Types
+ShoppingListItemクラスのすべてのプッロパティは初期値を持ち、
+またスーパークラスを持たない基本クラスなので、
+ShoppingListItemは、プロパティに初期値がセットされた新しいインスタンスを生成する
+デフォルト・イニシャライザを自動的に実装することになります。
 
-Structure types automatically receive a memberwise initializer if they do not define any of their own custom initializers. This is true even if the structure’s stored properties do not have default values.
+### Memberwise Initializers for Structure Types
 
-The memberwise initializer is a shorthand way to initialize the member properties of new structure instances. Initial values for the properties of the new instance can be passed to the memberwise initializer by name.
+構造体は独自のイニシャライザを定義していなくても、自動的にメンバワイズ・イニシャライザを受けとります。
+構造体のストアド・プロパティに初期値が無くてもかまいません。
 
-The example below defines a structure called Size with two properties called width and height. Both properties are inferred to be of type Double by assigning a default value of 0.0.
+メンバワイズ・イニシャライザは、新しい構造体インスタンスのメンバ・プロパティを初期化する簡単な方法です。
+新しいインスタンスのプロパティへの初期値は、名前によってメンバワイズ・イニシャライザに渡すことができます。
 
-The Size structure automatically receives an init(width:height:) memberwise initializer, which you can use to initialize a new Size instance:
+構造体　Sizeは、　width と height の２つのプロパティを持つと定義されています。
+初期値 0.0 から　Double型と推測されます。
 
+Size 構造体は自動的に　init(width:height:)　メンバワイズ・イニシャライザを得て、
+新しいSizeインスタンスを初期化するのに利用できます。
+
+{% highlight c %}
 struct Size {
     var width = 0.0, height = 0.0
 }
 let twoByTwo = Size(width: 2.0, height: 2.0)
+{% endhighlight %}
